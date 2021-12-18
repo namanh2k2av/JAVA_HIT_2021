@@ -17,7 +17,7 @@ public class RunMain {
             System.out.println("4.Sort books by name (ascending)");
             System.out.println("5.Sort books by price (descending)");
             System.out.println("6.Show all books");
-            System.out.println("7.Exit");
+            System.out.println("7.Exit\n");
             chon = sc.nextInt();
             switch (chon){
                 case 1:
@@ -25,6 +25,10 @@ public class RunMain {
                     addBook.Nhap();
                     books.add(addBook);
                     break;
+                case 2:
+                    System.out.print("Nhap id sach can sua: ");
+                    String idEdit = sc.nextLine();
+
             }
         }while (true);
     }
