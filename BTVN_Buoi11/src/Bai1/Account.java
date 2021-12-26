@@ -84,7 +84,6 @@ public class Account implements Comparable<Account>{
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", createAt='" + createAt + '\'' +
