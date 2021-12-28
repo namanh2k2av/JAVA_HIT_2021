@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 public class Book extends Document{
     private int numberOfPage;
-    private String Author;
+    private String author;
 
     public Book(){}
 
-    public Book(String id, String name, String published, float price, int numberOfPage, String author) {
+    public Book(int id, String name, String published, Double price, int numberOfPage, String author) {
         super(id, name, published, price);
         this.numberOfPage = numberOfPage;
-        Author = author;
+        this.author = author;
     }
 
     public int getNumberOfPage() {
@@ -23,20 +23,22 @@ public class Book extends Document{
     }
 
     public String getAuthor() {
-        return Author;
+        return author;
     }
 
     public void setAuthor(String author) {
-        Author = author;
+        this.author = author;
     }
 
     @Override
-    public void Nhap(){
-        Scanner sc = new Scanner(System.in);
-        super.Nhap();
-        System.out.print("Import number of page: ");
-        numberOfPage = sc.nextInt();
-        System.out.print("Import author: ");
-        Author = sc.nextLine();
+    public String toString() {
+        return "Book{" +
+                "numberOfPage=" + numberOfPage +
+                ", author='" + author + '\'' +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", published='" + published + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

@@ -3,61 +3,49 @@ package Bai2;
 import java.util.Scanner;
 
 public class Document {
-    protected String Id;
-    protected String Name;
-    protected String Published;
-    protected float Price;
+    protected int id;
+    protected String name;
+    protected String published;
+    protected Double price;
 
     public Document(){}
 
-    public Document(String id, String name, String published, float price) {
-        Id = id;
-        Name = name;
-        Published = published;
-        Price = price;
+    public Document(int id, String name, String published, Double price) {
+        this.id = id;
+        this.name = name;
+        this.published = published;
+        this.price = price;
     }
 
-    public String getId() {
-        return Id;
+    public int getId() {
+        return id;
     }
 
-    public void setId(String id) {
-        Id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getPublished() {
-        return Published;
+        return published;
     }
 
     public void setPublished(String published) {
-        Published = published;
+        this.published = published;
     }
 
-    public float getPrice() {
-        return Price;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setPrice(float price) {
-        Price = price;
-    }
-
-    public void Nhap(){
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Inport id: ");
-        Id = sc.nextLine();
-        System.out.print("Import name: ");
-        Name = sc.nextLine();
-        System.out.print("Import publisher: ");
-        Published = sc.nextLine();
-        System.out.print("Import price: ");
-        Price = sc.nextFloat();
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
