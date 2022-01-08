@@ -1,12 +1,12 @@
 package Model;
 
 public class Customer {
-    protected long customerId;
-    protected String customerName;
-    protected int customerAge;
-    protected String customerGender;
-    protected String customerAddress;
-    protected String customerPhone;
+    private long customerId;
+    private String customerName;
+    private int customerAge;
+    private String customerGender;
+    private String customerAddress;
+    private String customerPhone;
 
     public Customer() {
     }

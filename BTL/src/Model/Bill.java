@@ -3,19 +3,18 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bill extends Customer{
+public class Bill{
     private long billId;
     private String dateOfPurchase;
-    private List<Pet> pets = new ArrayList<>();
+    private long petId;
 
     public Bill() {
     }
 
-    public Bill(long customerId, String customerName, int customerAge, String customerGender, String customerAddress, String customerPhone, long customerId1, String dateOfPurchase, List<Pet> pets) {
-        super(customerId, customerName, customerAge, customerGender, customerAddress, customerPhone);
-        this.customerId = customerId1;
+    public Bill(long billId, String dateOfPurchase, long petId) {
+        this.billId = billId;
         this.dateOfPurchase = dateOfPurchase;
-        this.pets = pets;
+        this.petId = petId;
     }
 
     public long getBillId() {
@@ -34,21 +33,20 @@ public class Bill extends Customer{
         this.dateOfPurchase = dateOfPurchase;
     }
 
-    public List<Pet> getPets() {
-        return pets;
+    public long getPetId() {
+        return petId;
     }
 
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
+    public void setPetId(long petId) {
+        this.petId = petId;
     }
 
     @Override
     public String toString() {
         return "Bill{" +
                 "billId=" + billId +
-                ", customerId=" + customerId +
                 ", dateOfPurchase='" + dateOfPurchase + '\'' +
-                ", pets=" + pets +
+                ", petId=" + petId +
                 '}';
     }
 }
