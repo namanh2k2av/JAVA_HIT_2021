@@ -744,18 +744,86 @@ public class RunMain {
             System.out.println("---------- Chức năng----------");
             System.out.println("1. Tìm kiếm Pet theo tên");
             System.out.println("2. Tìm kiếm Pet theo loài");
-            System.out.println("4. Tìm kiếm Pet theo màu lông");
-            System.out.println("3. Tìm kiếm Pet theo giá");
+            System.out.println("3. Tìm kiếm Pet theo màu lông");
+            System.out.println("4. Tìm kiếm Pet theo giá");
             System.out.println("0. Quay lại");
             System.out.print("Chọn chức năng: ");
             int choice = sc.nextInt();
+            petList = fileController.ReadPetFromFile("Pet.DAT");
             switch (choice) {
                 case 1:
+                    System.out.print("Nhập tên thú nuôi cần tìm: ");
+                    sc.nextLine();
+                    String namePet = sc.nextLine();
+                    for (int i = 0; i < petList.size(); i++) {
+                        if (petList.get(i).getPetName().contains(namePet)) {
+                            System.out.println(petList.get(i));
+                        }
+                    }
                     break;
                 case 2:
+                    System.out.print("Nhập loài thú nuôi cần tìm: ");
+                    sc.nextLine();
+                    String species = sc.nextLine();
+                    for (int i = 0; i < petList.size(); i++) {
+                        if (petList.get(i).getSpecies().contains(species)) {
+                            System.out.println(petList.get(i));
+                        }
+                    }
                     break;
                 case 3:
+                    System.out.print("Nhập màu lông thú nuôi cần tìm: ");
+                    sc.nextLine();
+                    String featherColor = sc.nextLine();
+                    for (int i = 0; i < petList.size(); i++) {
+                        if (petList.get(i).getFeatherColor().contains(featherColor)) {
+                            System.out.println(petList.get(i));
+                        }
+                    }
                     break;
+                case 4:
+                    do {
+                        System.out.println("---------- Giá----------");
+                        System.out.println("1. Nhỏ hơn 5.000.000 VND");
+                        System.out.println("2. 5.000.000 VND đến 10.000.000 VND");
+                        System.out.println("4. 10.000.000 VND đến 20.000.000 VND");
+                        System.out.println("3. Lớn hơn 20.000.000 VND");
+                        System.out.println("0. Quay lại");
+                        System.out.print("Chọn chức năng: ");
+                        int find = sc.nextInt();
+                        switch (find) {
+                            case 1:
+                                for (int i = 0; i < petList.size(); i++) {
+                                    if (petList.get(i).getPetPrice() < 5000000) {
+                                        System.out.println(petList.get(i));
+                                    }
+                                }
+                                break;
+                            case 2:
+                                for (int i = 0; i < petList.size(); i++) {
+                                    if (petList.get(i).getPetPrice() >= 5000000 && petList.get(i).getPetPrice() < 10000000) {
+                                        System.out.println(petList.get(i));
+                                    }
+                                }
+                                break;
+                            case 3:
+                                for (int i = 0; i < petList.size(); i++) {
+                                    if (petList.get(i).getPetPrice() >= 10000000 && petList.get(i).getPetPrice() < 20000000) {
+                                        System.out.println(petList.get(i));
+                                    }
+                                }
+                                break;
+                            case 4:
+                                for (int i = 0; i < petList.size(); i++) {
+                                    if (petList.get(i).getPetPrice() > 20000000) {
+                                        System.out.println(petList.get(i));
+                                    }
+                                }
+                                break;
+                            case 0:
+                                return;
+                        }
+                    } while (true);
                 case 0:
                     return;
             }
