@@ -1,20 +1,19 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Bill{
     private long billId;
-    private String dateOfPurchase;
+    private long customerId;
     private long petId;
+    private String dateOfPurchase;
 
     public Bill() {
     }
 
-    public Bill(long billId, String dateOfPurchase, long petId) {
+    public Bill(long billId, long customerId, long petId, String dateOfPurchase) {
         this.billId = billId;
-        this.dateOfPurchase = dateOfPurchase;
+        this.customerId = customerId;
         this.petId = petId;
+        this.dateOfPurchase = dateOfPurchase;
     }
 
     public long getBillId() {
@@ -25,12 +24,12 @@ public class Bill{
         this.billId = billId;
     }
 
-    public String getDateOfPurchase() {
-        return dateOfPurchase;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setDateOfPurchase(String dateOfPurchase) {
-        this.dateOfPurchase = dateOfPurchase;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
     public long getPetId() {
@@ -41,12 +40,21 @@ public class Bill{
         this.petId = petId;
     }
 
+    public String getDateOfPurchase() {
+        return dateOfPurchase;
+    }
+
+    public void setDateOfPurchase(String dateOfPurchase) {
+        this.dateOfPurchase = dateOfPurchase;
+    }
+
     @Override
     public String toString() {
         return "Bill{" +
                 "billId=" + billId +
-                ", dateOfPurchase='" + dateOfPurchase + '\'' +
+                ", customerId=" + customerId +
                 ", petId=" + petId +
+                ", dateOfPurchase='" + dateOfPurchase + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.Account;
+import Model.Bill;
+import Model.Customer;
 import Model.Pet;
 
 import java.io.*;
@@ -137,6 +139,90 @@ public class FileController {
                     pet.getPetId() + "|" + pet.getPetName() + "|" + pet.getSpecies() + "|" +
                     pet.getPetGender() + "|" + pet.getPetAge() + "|" + pet.getFeatherColor() + "|" +
                     pet.getPetPrice()
+            );
+        }
+        CloseFileAfterWrite();
+    }
+
+    //Customer
+    public void WriteCustomerToFile(String fileName, Customer customer) {
+        OpenFileToWrite(fileName);
+        printWriter.println(
+                customer.getCustomerId() + "|" + customer.getCustomerName() + "|" + customer.getCustomerAge() + "|" +
+                customer.getCustomerGender() + "|" + customer.getCustomerAddress() + "|" + customer.getCustomerPhone()
+        );
+        CloseFileAfterWrite();
+    }
+
+    public Customer CreateCustomerFromData(String data) {
+        String[] datas = data.split("\\|");
+        Customer customer = new Customer(Integer.parseInt(datas[0]), datas[1], Integer.parseInt(datas[2]), datas[3], datas[4], datas[5]);
+        return customer;
+    }
+
+    public List<Customer> ReadCustomerFromFile(String fileName) {
+        OpenFileToRead(fileName);
+        List<Customer> customerList = new ArrayList<>();
+        while (scanner.hasNext()) {
+            String data = scanner.nextLine();
+            Customer customer = CreateCustomerFromData(data);
+            customerList.add(customer);
+        }
+        CloseFileAfterRead();
+        return customerList;
+    }
+
+    public void UpdateCustomerFile(List<Customer> customerList, String fileName) {
+        File file = new File(fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        OpenFileToWrite(fileName);
+        for (Customer customer : customerList) {
+            printWriter.println(
+                    customer.getCustomerId() + "|" + customer.getCustomerName() + "|" + customer.getCustomerAge() + "|" +
+                    customer.getCustomerGender() + "|" + customer.getCustomerAddress() + "|" + customer.getCustomerPhone()
+            );
+        }
+        CloseFileAfterWrite();
+    }
+
+    //Bill
+    public void WriteBillToFile(String fileName, Bill bill) {
+        OpenFileToWrite(fileName);
+        printWriter.println(
+                bill.getBillId() + "|" + bill.getCustomerId() + "|" + bill.getPetId() + "|" + bill.getDateOfPurchase()
+        );
+        CloseFileAfterWrite();
+    }
+
+    public Bill CreateBillFromData(String data) {
+        String[] datas = data.split("\\|");
+        Bill bill = new Bill(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]), Integer.parseInt(datas[2]), datas[3]);
+        return bill;
+    }
+
+    public List<Bill> ReadBillFromFile(String fileName) {
+        OpenFileToRead(fileName);
+        List<Bill> billList = new ArrayList<>();
+        while (scanner.hasNext()) {
+            String data = scanner.nextLine();
+            Bill bill = CreateBillFromData(data);
+            billList.add(bill);
+        }
+        CloseFileAfterRead();
+        return billList;
+    }
+
+    public void UpdateBillFile(List<Bill> billList, String fileName) {
+        File file = new File(fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        OpenFileToWrite(fileName);
+        for (Bill bill : billList) {
+            printWriter.println(
+                    bill.getBillId() + "|" + bill.getCustomerId() + "|" + bill.getPetId() + "|" + bill.getDateOfPurchase()
             );
         }
         CloseFileAfterWrite();

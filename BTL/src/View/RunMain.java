@@ -2,6 +2,8 @@ package View;
 
 import Controller.*;
 import Model.Account;
+import Model.Bill;
+import Model.Customer;
 import Model.Pet;
 
 import java.text.SimpleDateFormat;
@@ -13,6 +15,8 @@ public class RunMain {
     static Scanner sc = new Scanner(System.in);
     static List<Account> accountList = new ArrayList<>();
     static List<Pet> petList = new ArrayList<>();
+    static List<Customer> customerList = new ArrayList<>();
+    static List<Bill> billList = new ArrayList<>();
     static FileController fileController = new FileController();
 
     public static void main(String[] args) {
@@ -139,7 +143,7 @@ public class RunMain {
         createAt = simpleDateFormat.format(date);
 
         Account account = new Account(id, fullName, username, password, email, phone, createAt);
-        fileController.WriteAccountToFile("AccountAdm.DAT",account);
+        fileController.WriteAccountToFile("AccountAdmin.DAT",account);
 
         System.out.println("Tạo tài khoản thành công!");
     }
@@ -162,7 +166,7 @@ public class RunMain {
     }
 
     private static boolean checkExistId(long id) {
-        accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+        accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
         for (int i = 0; i < accountList.size(); i++) {
             if (accountList.get(i).getId() == id) {
                 return true;
@@ -172,7 +176,7 @@ public class RunMain {
     }
 
     private static boolean checkExistUsername(String username) {
-        accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+        accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
         for (int i = 0; i < accountList.size(); i++){
             if (accountList.get(i).getUsername().compareTo(username) == 0){
                 return true;
@@ -182,7 +186,7 @@ public class RunMain {
     }
 
     private static void loginAccount() {
-        accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+        accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
         String username, password;
         System.out.print("Nhập username: ");
         username = sc.nextLine();
@@ -252,7 +256,7 @@ public class RunMain {
                     changeAccount(account);
                     break;
                 case 3:
-                    accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+                    accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     accountList.forEach(accounts -> System.out.println(accounts));
                     break;
                 case 4:
@@ -301,7 +305,7 @@ public class RunMain {
         System.out.print("Nhập fullname: ");
         fullName = sc.nextLine();
         account.setFullName(fullName);
-        fileController.UpdateAccountFile(accountList,"AccountAdm.DAT");
+        fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
         System.out.println("Thay đổi fullname thành công");
     }
 
@@ -328,7 +332,7 @@ public class RunMain {
                         System.out.println("Password không khớp với nhau!");
                     } else {
                         account.setPassword(password);
-                        fileController.UpdateAccountFile(accountList,"AccountAdm.DAT");
+                        fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                         System.out.println("Thay đổi password thành công!");
                         return;
                     }
@@ -350,7 +354,7 @@ public class RunMain {
                 System.out.println("Số điện thoại không hợp lệ!");
             } else {
                 account.setPhone(phone);
-                fileController.UpdateAccountFile(accountList,"AccountAdm.DAT");
+                fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                 System.out.println("Thay đổi số điện thoại thành công!");
             }
         } while (!checkPhone);
@@ -369,7 +373,7 @@ public class RunMain {
                 System.out.println("Email không hợp lệ!");
             } else {
                 account.setEmail(email);
-                fileController.UpdateAccountFile(accountList,"AccountAdm.DAT");
+                fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                 System.out.println("Thay đổi email thành công!");
             }
         } while (!checkEmail);
@@ -386,7 +390,7 @@ public class RunMain {
             int sortAccount = sc.nextInt();
             switch (sortAccount) {
                 case 1:
-                    accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+                    accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     for (int i = 0; i < accountList.size(); i++) {
                         for (int j = i + 1; j < accountList.size(); j++) {
                             if (accountList.get(i).getId() > accountList.get(j).getId()) {
@@ -396,25 +400,25 @@ public class RunMain {
                             }
                         }
                     }
-                    fileController.UpdateAccountFile(accountList, "AccountAdm.DAT");
+                    fileController.UpdateAccountFile(accountList, "AccountAdmin.DAT");
                     accountList.forEach(account -> System.out.println(account));
                     break;
                 case 2:
-                    accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+                    accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     Collections.sort(accountList, new SortAccByFullname());
-                    fileController.UpdateAccountFile(accountList,"AccountAdm.DAT");
+                    fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                     accountList.forEach(account -> System.out.println(account));
                     break;
                 case 3:
-                    accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+                    accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     Collections.sort(accountList, new SortAccByUsername());
-                    fileController.UpdateAccountFile(accountList,"AccountAdm.DAT");
+                    fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                     accountList.forEach(account -> System.out.println(account));
                     break;
                 case 4:
-                    accountList = fileController.ReadAccountFromFile("AccountAdm.DAT");
+                    accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     Collections.sort(accountList, new SortAccByCreateAt());
-                    fileController.UpdateAccountFile(accountList,"AccountAdm.DAT");
+                    fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                     accountList.forEach(account -> System.out.println(account));
                     break;
                 case 0:
@@ -439,7 +443,7 @@ public class RunMain {
             sc.nextLine();
             switch (choice) {
                 case 1:
-                    petList = fileController.ReadPetFromFile("Pet.DAT");
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
                     petList.forEach(pet -> System.out.println(pet));
                     break;
                 case 2:
@@ -489,12 +493,12 @@ public class RunMain {
         long petPrice = sc.nextLong();
 
         Pet pet = new Pet(id, petName, species, petGender, petAge, featherColor, petPrice);
-        fileController.WritePetToFile("Pet.DAT",pet);
+        fileController.WritePetToFile("PetStore.DAT",pet);
         System.out.println("Thêm pet vào danh sách thành công!");
     }
 
     private static boolean checkExistPetId(long id) {
-        petList = fileController.ReadPetFromFile("Pet.DAT");
+        petList = fileController.ReadPetFromFile("PetStore.DAT");
         for (int i = 0; i < petList.size(); i++) {
             if (petList.get(i).getPetId() == id) {
                 return true;
@@ -521,7 +525,7 @@ public class RunMain {
     }
 
     private static void deletePet() {
-        petList = fileController.ReadPetFromFile("Pet.DAT");
+        petList = fileController.ReadPetFromFile("PetStore.DAT");
         long id;
         System.out.print("Nhập id của Pet cần xóa khỏi danh sách: ");
         do {
@@ -535,7 +539,7 @@ public class RunMain {
                 petList.remove(i);
             }
         }
-        fileController.UpdatePetFile(petList,"Pet.DAT");
+        fileController.UpdatePetFile(petList,"PetStore.DAT");
         System.out.println("Xóa thành công!");
     }
 
@@ -557,7 +561,7 @@ public class RunMain {
                             System.out.print("Id không tồn tại! Nhập lại id Pet cần sửa: ");
                         }
                     } while (!checkExistPetId(id1));
-                    petList = fileController.ReadPetFromFile("Pet.DAT");
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
                     for (int i = 0; i < petList.size(); i++) {
                         if (petList.get(i).getPetId() == id1) {
                             sc.nextLine();
@@ -579,7 +583,7 @@ public class RunMain {
                             System.out.print("Nhập giá thú nuôi: ");
                             long petPrice = sc.nextLong();
                             petList.get(i).setPetPrice(petPrice);
-                            fileController.UpdatePetFile(petList, "Pet.DAT");
+                            fileController.UpdatePetFile(petList, "PetStore.DAT");
                             System.out.println("Sửa thông tin Pet thành công!");
                         }
                     }
@@ -605,79 +609,79 @@ public class RunMain {
                     } while (!checkExistPetId(id2));
                     switch (choiceP) {
                         case 1:
-                            petList = fileController.ReadPetFromFile("Pet.DAT");
+                            petList = fileController.ReadPetFromFile("PetStore.DAT");
                             for (int i = 0; i < petList.size(); i++) {
                                 if (petList.get(i).getPetId() == id2) {
                                     sc.nextLine();
                                     System.out.print("Nhập tên thú nuôi: ");
                                     String petName = sc.nextLine();
                                     petList.get(i).setPetName(petName);
-                                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                                     System.out.println("Sửa thông tin Pet thành công!");
                                 }
                             }
                             break;
                         case 2:
-                            petList = fileController.ReadPetFromFile("Pet.DAT");
+                            petList = fileController.ReadPetFromFile("PetStore.DAT");
                             for (int i = 0; i < petList.size(); i++) {
                                 if (petList.get(i).getPetId() == id2) {
                                     sc.nextLine();
                                     System.out.print("Nhập giống loài thú nuôi: ");
                                     String species = sc.nextLine();
                                     petList.get(i).setSpecies(species);
-                                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                                     System.out.println("Sửa thông tin Pet thành công!");
                                 }
                             }
                             break;
                         case 3:
-                            petList = fileController.ReadPetFromFile("Pet.DAT");
+                            petList = fileController.ReadPetFromFile("PetStore.DAT");
                             for (int i = 0; i < petList.size(); i++) {
                                 if (petList.get(i).getPetId() == id2) {
                                     sc.nextLine();
                                     System.out.print("Nhập giới tính thú nuôi: ");
                                     String petGender = sc.nextLine();
                                     petList.get(i).setPetGender(petGender);
-                                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                                     System.out.println("Sửa thông tin Pet thành công!");
                                 }
                             }
                             break;
                         case 4:
-                            petList = fileController.ReadPetFromFile("Pet.DAT");
+                            petList = fileController.ReadPetFromFile("PetStore.DAT");
                             for (int i = 0; i < petList.size(); i++) {
                                 if (petList.get(i).getPetId() == id2) {
                                     sc.nextLine();
                                     System.out.print("Nhập tuổi thú nuôi: ");
                                     String petAge = sc.nextLine();
                                     petList.get(i).setPetAge(petAge);
-                                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                                     System.out.println("Sửa thông tin Pet thành công!");
                                 }
                             }
                             break;
                         case 5:
-                            petList = fileController.ReadPetFromFile("Pet.DAT");
+                            petList = fileController.ReadPetFromFile("PetStore.DAT");
                             for (int i = 0; i < petList.size(); i++) {
                                 if (petList.get(i).getPetId() == id2) {
                                     sc.nextLine();
                                     System.out.print("Nhập màu lông thú nuôi: ");
                                     String featherColor = sc.nextLine();
                                     petList.get(i).setFeatherColor(featherColor);
-                                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                                     System.out.println("Sửa thông tin Pet thành công!");
                                 }
                             }
                             break;
                         case 6:
-                            petList = fileController.ReadPetFromFile("Pet.DAT");
+                            petList = fileController.ReadPetFromFile("PetStore.DAT");
                             for (int i = 0; i < petList.size(); i++) {
                                 if (petList.get(i).getPetId() == id2) {
                                     sc.nextLine();
                                     System.out.print("Nhập giá thú nuôi: ");
                                     long petPrice = sc.nextLong();
                                     petList.get(i).setPetPrice(petPrice);
-                                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                                     System.out.println("Sửa thông tin Pet thành công!");
                                 }
                             }
@@ -700,7 +704,7 @@ public class RunMain {
             int choice = sc.nextInt();
             switch (choice) {
                 case 1:
-                    petList = fileController.ReadPetFromFile("Pet.DAT");
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
                     for (int i = 0; i < petList.size(); i++) {
                         for (int j = i + 1; j < petList.size(); j++) {
                             if (petList.get(i).getPetId() > petList.get(j).getPetId()) {
@@ -710,17 +714,17 @@ public class RunMain {
                             }
                         }
                     }
-                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                     petList.forEach(pet -> System.out.println(pet));
                     break;
                 case 2:
-                    petList = fileController.ReadPetFromFile("Pet.DAT");
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
                     Collections.sort(petList, new SortPetByNamePet());
-                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                     petList.forEach(pet -> System.out.println(pet));
                     break;
                 case 3:
-                    petList = fileController.ReadPetFromFile("Pet.DAT");
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
                     for (int i = 0; i < petList.size(); i++) {
                         for (int j = i + 1; j < petList.size(); j++) {
                             if (petList.get(i).getPetPrice() > petList.get(j).getPetPrice()) {
@@ -730,7 +734,7 @@ public class RunMain {
                             }
                         }
                     }
-                    fileController.UpdatePetFile(petList, "Pet.DAT");
+                    fileController.UpdatePetFile(petList, "PetStore.DAT");
                     petList.forEach(pet -> System.out.println(pet));
                     break;
                 case 0:
@@ -749,7 +753,7 @@ public class RunMain {
             System.out.println("0. Quay lại");
             System.out.print("Chọn chức năng: ");
             int choice = sc.nextInt();
-            petList = fileController.ReadPetFromFile("Pet.DAT");
+            petList = fileController.ReadPetFromFile("PetStore.DAT");
             switch (choice) {
                 case 1:
                     System.out.print("Nhập tên thú nuôi cần tìm: ");
@@ -844,8 +848,11 @@ public class RunMain {
             sc.nextLine();
             switch (choice) {
                 case 1:
+                    billList = fileController.ReadBillFromFile("Bill.DAT");
+                    billList.forEach(bill -> System.out.println(bill));
                     break;
                 case 2:
+                    createBill();
                     break;
                 case 3:
                     break;
@@ -855,6 +862,175 @@ public class RunMain {
                     return;
                 default:
                     System.out.println("Chọn sai chức năng!");
+            }
+        }
+    }
+
+    private static void createBill() {
+        do {
+            System.out.println("----------- Khách hàng -----------");
+            System.out.println("1. Đã có thông tin");
+            System.out.println("2. Chưa có thông tin");
+            System.out.println("0. Quay lại");
+            System.out.print("Chọn chức năng: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1: {
+                    System.out.print("Nhập id hóa đơn: ");
+                    long billId = readNewBillId();
+                    System.out.print("Nhập id khách hàng: ");
+                    long customerId;
+                    do {
+                        customerId = sc.nextInt();
+                        if (!checkExistCustomerId(customerId)) {
+                            System.out.print("Id không tồn tại! Nhập lại id khách hàng: ");
+                        }
+                    } while (!checkExistPetId(customerId));
+
+                    // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
+                    System.out.print("Nhập id pet: ");
+                    long petId;
+                    do {
+                        petId = sc.nextInt();
+                        if (!checkExistPetId(petId)) {
+                            System.out.print("Id không tồn tại! Nhập lại id Pet: ");
+                        }
+                    } while (!checkExistPetId(petId));
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
+                    for (int i = 0; i < petList.size(); i++) {
+                        if (petList.get(i).getPetId() == petId) {
+                            Pet pet = new Pet(petList.get(i).getPetId(), petList.get(i).getPetName(),
+                                    petList.get(i).getSpecies(), petList.get(i).getPetGender(),
+                                    petList.get(i).getPetAge(), petList.get(i).getFeatherColor(),
+                                    petList.get(i).getPetPrice());
+                            fileController.WritePetToFile("PetBill", pet);
+                            petList.remove(i);
+                        }
+                    }
+                    fileController.UpdatePetFile(petList,"PetStore.DAT");
+
+                    Date date = new Date();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String dateOfPurchase = simpleDateFormat.format(date);
+
+                    Bill bill = new Bill(billId, customerId, petId, dateOfPurchase);
+                    fileController.WriteBillToFile("Bill.DAT", bill);
+
+                    System.out.println("Tạo hóa đơn thành công!");
+                    break;
+                }
+                case 2: {
+                    System.out.println("Nhập thông tin khách hàng:");
+                    System.out.print("Nhập id khách hàng: ");
+                    long customerId = readNewCustomerId();
+                    System.out.print("Nhập tên khách hàng: ");
+                    String customerName = sc.nextLine();
+                    System.out.print("Nhập tuổi khách hàng: ");
+                    int customerAge = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Nhập giới tính khách hàng: ");
+                    String customerGender = sc.nextLine();
+                    System.out.print("Nhập địa chỉ khách hàng: ");
+                    String customerAddress = sc.nextLine();
+                    System.out.print("Nhập số điện thoại: ");
+                    String customerPhone = sc.nextLine();
+
+                    Customer customer = new Customer(customerId, customerName, customerAge, customerGender, customerAddress, customerPhone);
+                    fileController.WriteCustomerToFile("Customer.DAT", customer);
+                    System.out.println("Thêm khách hàng vào danh sách thành công!");
+
+                    System.out.print("Nhập id hóa đơn: ");
+                    long billId = readNewBillId();
+
+                    // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
+                    System.out.print("Nhập id pet: ");
+                    long petId;
+                    do {
+                        petId = sc.nextInt();
+                        if (!checkExistPetId(petId)) {
+                            System.out.print("Id không tồn tại! Nhập lại id Pet: ");
+                        }
+                    } while (!checkExistPetId(petId));
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
+                    for (int i = 0; i < petList.size(); i++) {
+                        if (petList.get(i).getPetId() == petId) {
+                            Pet pet = new Pet(petList.get(i).getPetId(), petList.get(i).getPetName(),
+                                    petList.get(i).getSpecies(), petList.get(i).getPetGender(),
+                                    petList.get(i).getPetAge(), petList.get(i).getFeatherColor(),
+                                    petList.get(i).getPetPrice());
+                            fileController.WritePetToFile("PetBill", pet);
+                            petList.remove(i);
+                        }
+                    }
+                    fileController.UpdatePetFile(petList,"PetStore.DAT");
+
+                    Date date = new Date();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String dateOfPurchase = simpleDateFormat.format(date);
+
+                    Bill bill = new Bill(billId, customerId, petId, dateOfPurchase);
+                    fileController.WriteBillToFile("Bill.DAT", bill);
+
+                    System.out.println("Tạo hóa đơn thành công!");
+                    break;
+                }
+                case 0:
+                    return;
+            }
+        } while (true);
+    }
+
+    private static boolean checkExistCustomerId(long id) {
+        customerList = fileController.ReadCustomerFromFile("Customer.DAT");
+        for (int i = 0; i < customerList.size(); i++) {
+            if (customerList.get(i).getCustomerId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static long readNewCustomerId() {
+        long id;
+        while (true) {
+            try {
+                do {
+                    id = Integer.parseInt(sc.nextLine());
+                    if (checkExistCustomerId(id)) {
+                        System.out.print("Id tồn tại! Nhập lại ID: ");
+                    }
+                } while (checkExistCustomerId(id));
+                return id;
+            } catch (NumberFormatException e) {
+                System.out.print("Nhập lại ID: ");
+            }
+        }
+    }
+
+    private static boolean checkExistBillId(long id) {
+        billList = fileController.ReadBillFromFile("Bill.DAT");
+        for (int i = 0; i < billList.size(); i++) {
+            if (billList.get(i).getBillId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static long readNewBillId() {
+        long id;
+        while (true) {
+            try {
+                do {
+                    id = Integer.parseInt(sc.nextLine());
+                    if (checkExistBillId(id)) {
+                        System.out.print("Id tồn tại! Nhập lại ID: ");
+                    }
+                } while (checkExistBillId(id));
+                return id;
+            } catch (NumberFormatException e) {
+                System.out.print("Nhập lại ID: ");
             }
         }
     }
