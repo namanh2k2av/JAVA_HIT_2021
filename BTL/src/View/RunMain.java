@@ -897,8 +897,7 @@ public class RunMain {
             sc.nextLine();
             switch (choice) {
                 case 1: {
-                    System.out.print("Nhập id hóa đơn: ");
-                    long billId = readNewBillId();
+                    long billId = autoInputBillId();
                     System.out.print("Nhập id khách hàng: ");
                     long customerId = readOldCustomerId();
                     // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
@@ -949,8 +948,7 @@ public class RunMain {
                     fileController.WriteCustomerToFile("Customer.DAT", customer);
                     System.out.println("Thêm khách hàng vào danh sách thành công!");
 
-                    System.out.print("Nhập id hóa đơn: ");
-                    long billId = readNewBillId();
+                    long billId =autoInputBillId();
 
                     // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
                     System.out.print("Nhập id pet: ");
@@ -1023,33 +1021,6 @@ public class RunMain {
                         System.out.print("Id không tồn tại! Nhập lại ID: ");
                     }
                 } while (!checkExistCustomerId(id));
-                return id;
-            } catch (NumberFormatException e) {
-                System.out.print("Nhập lại ID: ");
-            }
-        }
-    }
-
-    private static boolean checkExistBillId(long id) {
-        billList = fileController.ReadBillFromFile("Bill.DAT");
-        for (int i = 0; i < billList.size(); i++) {
-            if (billList.get(i).getBillId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static long readNewBillId() {
-        long id;
-        while (true) {
-            try {
-                do {
-                    id = Integer.parseInt(sc.nextLine());
-                    if (checkExistBillId(id)) {
-                        System.out.print("Id tồn tại! Nhập lại ID: ");
-                    }
-                } while (checkExistBillId(id));
                 return id;
             } catch (NumberFormatException e) {
                 System.out.print("Nhập lại ID: ");
@@ -1269,7 +1240,7 @@ public class RunMain {
                         petList.forEach(pet -> System.out.println(pet));
                         break;
                     case 2:
-
+                        buyPet();
                         break;
                     case 3:
                         break;
@@ -1286,5 +1257,112 @@ public class RunMain {
         } else {
             System.out.println("Tài khoản hoặc mật khẩu không tồn tại!");
         }
+    }
+
+    private static void buyPet() {
+        do {
+            System.out.println("----------- Khách hàng -----------");
+            System.out.println("1. Đã có thông tin");
+            System.out.println("2. Chưa có thông tin");
+            System.out.println("0. Quay lại");
+            System.out.print("Chọn chức năng: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1: {
+                    long billId = autoInputBillId();
+                    System.out.print("Nhập id khách hàng: ");
+                    long customerId = readOldCustomerId();
+                    // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
+                    System.out.print("Nhập id pet: ");
+                    long petId = readOldIdPet();
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
+                    long totalMoney = 0;
+                    for (int i = 0; i < petList.size(); i++) {
+                        if (petList.get(i).getPetId() == petId) {
+                            Pet pet = new Pet(petList.get(i).getPetId(), petList.get(i).getPetName(),
+                                    petList.get(i).getSpecies(), petList.get(i).getPetGender(),
+                                    petList.get(i).getPetAge(), petList.get(i).getFeatherColor(),
+                                    petList.get(i).getPetPrice());
+                            totalMoney = petList.get(i).getPetPrice();
+                            fileController.WritePetToFile("PetBill", pet);
+                            petList.remove(i);
+                        }
+                    }
+                    fileController.UpdatePetFile(petList,"PetStore.DAT");
+
+                    Date date = new Date();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String dateOfPurchase = simpleDateFormat.format(date);
+
+                    Bill bill = new Bill(billId, customerId, petId, totalMoney, dateOfPurchase);
+                    fileController.WriteBillToFile("Bill.DAT", bill);
+
+                    System.out.println("Tạo hóa đơn thành công!");
+                    break;
+                }
+                case 2: {
+                    System.out.println("Nhập thông tin khách hàng:");
+                    System.out.print("Nhập id khách hàng: ");
+                    long customerId = readNewCustomerId();
+                    System.out.print("Nhập tên khách hàng: ");
+                    String customerName = sc.nextLine();
+                    System.out.print("Nhập tuổi khách hàng: ");
+                    int customerAge = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Nhập giới tính khách hàng: ");
+                    String customerGender = sc.nextLine();
+                    System.out.print("Nhập địa chỉ khách hàng: ");
+                    String customerAddress = sc.nextLine();
+                    System.out.print("Nhập số điện thoại: ");
+                    String customerPhone = sc.nextLine();
+
+                    Customer customer = new Customer(customerId, customerName, customerAge, customerGender, customerAddress, customerPhone);
+                    fileController.WriteCustomerToFile("Customer.DAT", customer);
+                    System.out.println("Thêm khách hàng vào danh sách thành công!");
+
+                    long billId = autoInputBillId();
+
+                    // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
+                    System.out.print("Nhập id pet: ");
+                    long petId = readOldIdPet();
+                    petList = fileController.ReadPetFromFile("PetStore.DAT");
+                    long totalMoney = 0;
+                    for (int i = 0; i < petList.size(); i++) {
+                        if (petList.get(i).getPetId() == petId) {
+                            Pet pet = new Pet(petList.get(i).getPetId(), petList.get(i).getPetName(),
+                                    petList.get(i).getSpecies(), petList.get(i).getPetGender(),
+                                    petList.get(i).getPetAge(), petList.get(i).getFeatherColor(),
+                                    petList.get(i).getPetPrice());
+                            totalMoney = petList.get(i).getPetPrice();
+                            fileController.WritePetToFile("PetBill", pet);
+                            petList.remove(i);
+                        }
+                    }
+                    fileController.UpdatePetFile(petList,"PetStore.DAT");
+
+                    Date date = new Date();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String dateOfPurchase = simpleDateFormat.format(date);
+
+                    Bill bill = new Bill(billId, customerId, petId, totalMoney, dateOfPurchase);
+                    fileController.WriteBillToFile("Bill.DAT", bill);
+
+                    System.out.println("Tạo hóa đơn thành công!");
+                    break;
+                }
+                case 0:
+                    return;
+            }
+        } while (true);
+    }
+
+    private static long autoInputBillId() {
+        billList = fileController.ReadBillFromFile("Bill.DAT");
+        Bill maxId = billList.stream()
+                .max(Comparator.comparing(Bill::getBillId))
+                .get();
+        long id = maxId.getBillId();
+        return id+1;
     }
 }
