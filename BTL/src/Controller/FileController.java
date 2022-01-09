@@ -191,14 +191,15 @@ public class FileController {
     public void WriteBillToFile(String fileName, Bill bill) {
         OpenFileToWrite(fileName);
         printWriter.println(
-                bill.getBillId() + "|" + bill.getCustomerId() + "|" + bill.getPetId() + "|" + bill.getDateOfPurchase()
+                bill.getBillId() + "|" + bill.getCustomerId() + "|" + bill.getPetId() + "|" +
+                bill.getTotalMoney() + "|" + bill.getDateOfPurchase()
         );
         CloseFileAfterWrite();
     }
 
     public Bill CreateBillFromData(String data) {
         String[] datas = data.split("\\|");
-        Bill bill = new Bill(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]), Integer.parseInt(datas[2]), datas[3]);
+        Bill bill = new Bill(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]), Integer.parseInt(datas[2]), Integer.parseInt(datas[3]), datas[4]);
         return bill;
     }
 
@@ -222,7 +223,8 @@ public class FileController {
         OpenFileToWrite(fileName);
         for (Bill bill : billList) {
             printWriter.println(
-                    bill.getBillId() + "|" + bill.getCustomerId() + "|" + bill.getPetId() + "|" + bill.getDateOfPurchase()
+                    bill.getBillId() + "|" + bill.getCustomerId() + "|" + bill.getPetId() + "|" +
+                    bill.getTotalMoney() + "|" + bill.getDateOfPurchase()
             );
         }
         CloseFileAfterWrite();

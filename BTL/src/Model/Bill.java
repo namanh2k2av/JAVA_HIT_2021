@@ -4,15 +4,17 @@ public class Bill{
     private long billId;
     private long customerId;
     private long petId;
+    private long totalMoney;
     private String dateOfPurchase;
 
     public Bill() {
     }
 
-    public Bill(long billId, long customerId, long petId, String dateOfPurchase) {
+    public Bill(long billId, long customerId, long petId, long totalMoney, String dateOfPurchase) {
         this.billId = billId;
         this.customerId = customerId;
         this.petId = petId;
+        this.totalMoney = totalMoney;
         this.dateOfPurchase = dateOfPurchase;
     }
 
@@ -40,6 +42,14 @@ public class Bill{
         this.petId = petId;
     }
 
+    public long getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(long totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
     public String getDateOfPurchase() {
         return dateOfPurchase;
     }
@@ -54,6 +64,7 @@ public class Bill{
                 "billId=" + billId +
                 ", customerId=" + customerId +
                 ", petId=" + petId +
+                ", totalMoney=" + totalMoney +
                 ", dateOfPurchase='" + dateOfPurchase + '\'' +
                 '}';
     }

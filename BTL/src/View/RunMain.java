@@ -35,10 +35,10 @@ public class RunMain {
             sc.nextLine();
             switch (choice) {
                 case 1:
-                    showMenuAdmin();
+                    accAdmin();
                     break;
                 case 2:
-
+                    accCustomer();
                     break;
                 case 0:
                     System.out.println("Thoát thành công!");
@@ -51,7 +51,7 @@ public class RunMain {
         }
     }
 
-    private static void showMenuAdmin() {
+    private static void accAdmin() {
         int choice;
         while (true) {
             System.out.println("------------ Tài Khoản ------------");
@@ -63,21 +63,21 @@ public class RunMain {
             sc.nextLine();
             switch (choice) {
                 case 1:
-                    createAccount();
+                    createAccount("AccountAdmin.DAT");
                     break;
                 case 2:
-                    loginAccount();
+                    loginAddmin();
                     break;
                 case 0:
                     return;
                 default:
                     System.out.println("Chọn sai chức năng!");
-                    showMenuAdmin();
+                    accAdmin();
             }
         }
     }
 
-    private static void createAccount() {
+    private static void createAccount(String fileName) {
         String fullName, username, password, rePassword, email, phone, createAt;
         boolean checkUsername, checkExistUsername, checkPassword, checkEmail, checkPhone;
         Pattern regexUsername = Pattern.compile("^[a-zA-Z0-9]{6,}$");
@@ -86,7 +86,7 @@ public class RunMain {
         Pattern regexPhone = Pattern.compile("^[0-9\\-\\+]{9,15}$");
         //Id
         System.out.print("Nhập id: ");
-        long id = readNewId();
+        long id = readNewId(fileName);
         //Fullname
         System.out.print("Nhập fullName: ");
         fullName = sc.nextLine();
@@ -95,7 +95,7 @@ public class RunMain {
             System.out.print("Nhập username: ");
             username = sc.nextLine();
             checkUsername = regexUsername.matcher(username).find();
-            checkExistUsername = checkExistUsername(username);
+            checkExistUsername = checkExistUsername(username, fileName);
             if (!checkUsername) {
                 System.out.println("Username không hợp lệ!");
             } else {
@@ -143,21 +143,21 @@ public class RunMain {
         createAt = simpleDateFormat.format(date);
 
         Account account = new Account(id, fullName, username, password, email, phone, createAt);
-        fileController.WriteAccountToFile("AccountAdmin.DAT",account);
+        fileController.WriteAccountToFile(fileName,account);
 
         System.out.println("Tạo tài khoản thành công!");
     }
 
-    private static long readNewId() {
+    private static long readNewId(String fileName) {
         long id;
         while (true) {
             try {
                 do {
                     id = Integer.parseInt(sc.nextLine());
-                    if (checkExistId(id)) {
+                    if (checkExistId(id, fileName)) {
                         System.out.print("Id tồn tại! Nhập lại id: ");
                     }
-                } while (checkExistId(id));
+                } while (checkExistId(id, fileName));
                 return id;
             } catch (NumberFormatException e) {
                 System.out.print("Nhập lại id: ");
@@ -165,8 +165,8 @@ public class RunMain {
         }
     }
 
-    private static boolean checkExistId(long id) {
-        accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
+    private static boolean checkExistId(long id, String fileName) {
+        accountList = fileController.ReadAccountFromFile(fileName);
         for (int i = 0; i < accountList.size(); i++) {
             if (accountList.get(i).getId() == id) {
                 return true;
@@ -175,8 +175,8 @@ public class RunMain {
         return false;
     }
 
-    private static boolean checkExistUsername(String username) {
-        accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
+    private static boolean checkExistUsername(String username, String fileName) {
+        accountList = fileController.ReadAccountFromFile(fileName);
         for (int i = 0; i < accountList.size(); i++){
             if (accountList.get(i).getUsername().compareTo(username) == 0){
                 return true;
@@ -185,7 +185,7 @@ public class RunMain {
         return false;
     }
 
-    private static void loginAccount() {
+    private static void loginAddmin() {
         accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
         String username, password;
         System.out.print("Nhập username: ");
@@ -212,7 +212,7 @@ public class RunMain {
                         petManagement();
                         break;
                     case 2:
-                        customerManagement();
+                        billManagement();
                         break;
                     case 3:
                         accountManagement(account);
@@ -524,6 +524,23 @@ public class RunMain {
         }
     }
 
+    private static long readOldIdPet() {
+        long id;
+        while (true) {
+            try {
+                do {
+                    id = Integer.parseInt(sc.nextLine());
+                    if (!checkExistPetId(id)) {
+                        System.out.print("Id không tồn tại! Nhập lại ID: ");
+                    }
+                } while (!checkExistPetId(id));
+                return id;
+            } catch (NumberFormatException e) {
+                System.out.print("Nhập lại ID: ");
+            }
+        }
+    }
+
     private static void deletePet() {
         petList = fileController.ReadPetFromFile("PetStore.DAT");
         long id;
@@ -599,14 +616,8 @@ public class RunMain {
                     System.out.print("Chọn chức năng: ");
                     int choiceP = sc.nextInt();
                     sc.nextLine();
-                    long id2;
                     System.out.print("Nhập id của Pet cần sửa trong danh sách: ");
-                    do {
-                        id2 = sc.nextInt();
-                        if (!checkExistPetId(id2)) {
-                            System.out.print("Id không tồn tại! Nhập lại id Pet cần sửa: ");
-                        }
-                    } while (!checkExistPetId(id2));
+                    long id2 = readOldIdPet();
                     switch (choiceP) {
                         case 1:
                             petList = fileController.ReadPetFromFile("PetStore.DAT");
@@ -834,14 +845,15 @@ public class RunMain {
         } while (true);
     }
 
-    private static void customerManagement() {
+    private static void billManagement() {
         int choice;
         while (true) {
             System.out.println("----------- Chức năng -----------");
             System.out.println("1. Xem danh sách các hóa đơn");
             System.out.println("2. Tạo hóa đơn");
             System.out.println("3. Sắp xếp hóa đơn trong danh sách");
-            System.out.println("4. Tìm kiếm hóa đơn");
+            System.out.println("4. Xem danh sách khách hàng");
+            System.out.println("5. Sửa thông tin khách hàng");
             System.out.println("0. Quay lại");
             System.out.print("Chọn chức năng: ");
             choice = sc.nextInt();
@@ -855,8 +867,16 @@ public class RunMain {
                     createBill();
                     break;
                 case 3:
+                    sortBill();
                     break;
                 case 4:
+                    customerList = fileController.ReadCustomerFromFile("Customer.DAT");
+                    customerList.forEach(customer -> System.out.println(customer));
+                    break;
+                case 5:
+                    System.out.print("Nhập id cần sửa: ");
+                    long id = readOldCustomerId();
+                    changeCustomer(id);
                     break;
                 case 0:
                     return;
@@ -880,30 +900,19 @@ public class RunMain {
                     System.out.print("Nhập id hóa đơn: ");
                     long billId = readNewBillId();
                     System.out.print("Nhập id khách hàng: ");
-                    long customerId;
-                    do {
-                        customerId = sc.nextInt();
-                        if (!checkExistCustomerId(customerId)) {
-                            System.out.print("Id không tồn tại! Nhập lại id khách hàng: ");
-                        }
-                    } while (!checkExistPetId(customerId));
-
+                    long customerId = readOldCustomerId();
                     // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
                     System.out.print("Nhập id pet: ");
-                    long petId;
-                    do {
-                        petId = sc.nextInt();
-                        if (!checkExistPetId(petId)) {
-                            System.out.print("Id không tồn tại! Nhập lại id Pet: ");
-                        }
-                    } while (!checkExistPetId(petId));
+                    long petId = readOldIdPet();
                     petList = fileController.ReadPetFromFile("PetStore.DAT");
+                    long totalMoney = 0;
                     for (int i = 0; i < petList.size(); i++) {
                         if (petList.get(i).getPetId() == petId) {
                             Pet pet = new Pet(petList.get(i).getPetId(), petList.get(i).getPetName(),
                                     petList.get(i).getSpecies(), petList.get(i).getPetGender(),
                                     petList.get(i).getPetAge(), petList.get(i).getFeatherColor(),
                                     petList.get(i).getPetPrice());
+                            totalMoney = petList.get(i).getPetPrice();
                             fileController.WritePetToFile("PetBill", pet);
                             petList.remove(i);
                         }
@@ -914,7 +923,7 @@ public class RunMain {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     String dateOfPurchase = simpleDateFormat.format(date);
 
-                    Bill bill = new Bill(billId, customerId, petId, dateOfPurchase);
+                    Bill bill = new Bill(billId, customerId, petId, totalMoney, dateOfPurchase);
                     fileController.WriteBillToFile("Bill.DAT", bill);
 
                     System.out.println("Tạo hóa đơn thành công!");
@@ -945,20 +954,16 @@ public class RunMain {
 
                     // Xóa Pet trong file PetStore, Thêm Pet vào file PetBill
                     System.out.print("Nhập id pet: ");
-                    long petId;
-                    do {
-                        petId = sc.nextInt();
-                        if (!checkExistPetId(petId)) {
-                            System.out.print("Id không tồn tại! Nhập lại id Pet: ");
-                        }
-                    } while (!checkExistPetId(petId));
+                    long petId = readOldIdPet();
                     petList = fileController.ReadPetFromFile("PetStore.DAT");
+                    long totalMoney = 0;
                     for (int i = 0; i < petList.size(); i++) {
                         if (petList.get(i).getPetId() == petId) {
                             Pet pet = new Pet(petList.get(i).getPetId(), petList.get(i).getPetName(),
                                     petList.get(i).getSpecies(), petList.get(i).getPetGender(),
                                     petList.get(i).getPetAge(), petList.get(i).getFeatherColor(),
                                     petList.get(i).getPetPrice());
+                            totalMoney = petList.get(i).getPetPrice();
                             fileController.WritePetToFile("PetBill", pet);
                             petList.remove(i);
                         }
@@ -969,7 +974,7 @@ public class RunMain {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     String dateOfPurchase = simpleDateFormat.format(date);
 
-                    Bill bill = new Bill(billId, customerId, petId, dateOfPurchase);
+                    Bill bill = new Bill(billId, customerId, petId, totalMoney, dateOfPurchase);
                     fileController.WriteBillToFile("Bill.DAT", bill);
 
                     System.out.println("Tạo hóa đơn thành công!");
@@ -1008,6 +1013,23 @@ public class RunMain {
         }
     }
 
+    private static long readOldCustomerId() {
+        long id;
+        while (true) {
+            try {
+                do {
+                    id = Integer.parseInt(sc.nextLine());
+                    if (!checkExistCustomerId(id)) {
+                        System.out.print("Id không tồn tại! Nhập lại ID: ");
+                    }
+                } while (!checkExistCustomerId(id));
+                return id;
+            } catch (NumberFormatException e) {
+                System.out.print("Nhập lại ID: ");
+            }
+        }
+    }
+
     private static boolean checkExistBillId(long id) {
         billList = fileController.ReadBillFromFile("Bill.DAT");
         for (int i = 0; i < billList.size(); i++) {
@@ -1032,6 +1054,237 @@ public class RunMain {
             } catch (NumberFormatException e) {
                 System.out.print("Nhập lại ID: ");
             }
+        }
+    }
+
+    private static void sortBill() {
+        do {
+            System.out.println("---------- Chức năng----------");
+            System.out.println("1. Sắp xếp theo id hóa đơn");
+            System.out.println("2. Sắp xếp theo id khách hàng");
+            System.out.println("3. Sắp xếp theo id pet");
+            System.out.println("4. Sắp xếp theo thành tiền");
+            System.out.println("5. sắp xếp theo ngày tạo");
+            System.out.println("0. Quay lại");
+            System.out.print("Chọn chức năng: ");
+            int choice = sc.nextInt();
+            billList = fileController.ReadBillFromFile("Bill.DAT");
+            switch (choice) {
+                case 1:
+                    for (int i = 0; i < billList.size(); i++) {
+                        for (int j = i + 1; j < billList.size(); j++) {
+                            if (billList.get(i).getBillId() > billList.get(j).getBillId()) {
+                                Bill temp = billList.get(i);
+                                billList.set(i, billList.get(j));
+                                billList.set(j, temp);
+                            }
+                        }
+                    }
+                    fileController.UpdateBillFile(billList, "Bill.DAT");
+                    billList.forEach(bill -> System.out.println(bill));
+                    break;
+                case 2:
+                    for (int i = 0; i < billList.size(); i++) {
+                        for (int j = i + 1; j < billList.size(); j++) {
+                            if (billList.get(i).getCustomerId() > billList.get(j).getCustomerId()) {
+                                Bill temp = billList.get(i);
+                                billList.set(i, billList.get(j));
+                                billList.set(j, temp);
+                            }
+                        }
+                    }
+                    fileController.UpdateBillFile(billList, "Bill.DAT");
+                    billList.forEach(bill -> System.out.println(bill));
+                    break;
+                case 3:
+                    for (int i = 0; i < billList.size(); i++) {
+                        for (int j = i + 1; j < billList.size(); j++) {
+                            if (billList.get(i).getPetId() > billList.get(j).getPetId()) {
+                                Bill temp = billList.get(i);
+                                billList.set(i, billList.get(j));
+                                billList.set(j, temp);
+                            }
+                        }
+                    }
+                    fileController.UpdateBillFile(billList, "Bill.DAT");
+                    billList.forEach(bill -> System.out.println(bill));
+                    break;
+                case 4:
+                    for (int i = 0; i < billList.size(); i++) {
+                        for (int j = i + 1; j < billList.size(); j++) {
+                            if (billList.get(i).getTotalMoney() > billList.get(j).getTotalMoney()) {
+                                Bill temp = billList.get(i);
+                                billList.set(i, billList.get(j));
+                                billList.set(j, temp);
+                            }
+                        }
+                    }
+                    fileController.UpdateBillFile(billList, "Bill.DAT");
+                    billList.forEach(bill -> System.out.println(bill));
+                    break;
+                case 5:
+                    Collections.sort(billList, new SortBillByDate());
+                    fileController.UpdateBillFile(billList, "Bill.DAT");
+                    billList.forEach(bill -> System.out.println(bill));
+                    break;
+                case 0:
+                    return;
+            }
+        } while (true);
+    }
+
+    private static void changeCustomer(long id) {
+        do {
+            System.out.println("---------- Sửa ----------");
+            System.out.println("1. Tên");
+            System.out.println("2. Tuổi");
+            System.out.println("3. Giới tính");
+            System.out.println("4. Địa chỉ");
+            System.out.println("5. Số điện thoại");
+            System.out.println("0. Quay lại");
+            System.out.print("Chọn chức năng: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1:
+                    customerList = fileController.ReadCustomerFromFile("Customer.DAT");
+                    for (int i = 0; i < customerList.size(); i++) {
+                        if (customerList.get(i).getCustomerId() == id) {
+                            System.out.print("Nhập tên: ");
+                            String customerName = sc.nextLine();
+                            customerList.get(i).setCustomerName(customerName);
+                            fileController.UpdateCustomerFile(customerList, "Customer.DAT");
+                            System.out.println("Sửa thông tin thành công!");
+                        }
+                    }
+                    break;
+                case 2:
+                    customerList = fileController.ReadCustomerFromFile("Customer.DAT");
+                    for (int i = 0; i < customerList.size(); i++) {
+                        if (customerList.get(i).getCustomerId() == id) {
+                            System.out.print("Nhập tuổi: ");
+                            int customerAge = sc.nextInt();
+                            customerList.get(i).setCustomerAge(customerAge);
+                            fileController.UpdateCustomerFile(customerList, "Customer.DAT");
+                            System.out.println("Sửa thông tin thành công!");
+                        }
+                    }
+                    break;
+                case 3:
+                    customerList = fileController.ReadCustomerFromFile("Customer.DAT");
+                    for (int i = 0; i < customerList.size(); i++) {
+                        if (customerList.get(i).getCustomerId() == id) {
+                            System.out.print("Nhập giới tính: ");
+                            String customerGender = sc.nextLine();
+                            customerList.get(i).setCustomerGender(customerGender);
+                            fileController.UpdateCustomerFile(customerList, "Customer.DAT");
+                            System.out.println("Sửa thông tin thành công!");
+                        }
+                    }
+                    break;
+                case 4:
+                    customerList = fileController.ReadCustomerFromFile("Customer.DAT");
+                    for (int i = 0; i < customerList.size(); i++) {
+                        if (customerList.get(i).getCustomerId() == id) {
+                            System.out.print("Nhập địa chỉ: ");
+                            String customerAddress = sc.nextLine();
+                            customerList.get(i).setCustomerAddress(customerAddress);
+                            fileController.UpdateCustomerFile(customerList, "Customer.DAT");
+                            System.out.println("Sửa thông tin thành công!");
+                        }
+                    }
+                    break;
+                case 5:
+                    customerList = fileController.ReadCustomerFromFile("Customer.DAT");
+                    for (int i = 0; i < customerList.size(); i++) {
+                        if (customerList.get(i).getCustomerId() == id) {
+                            System.out.print("Nhập số điện thoại: ");
+                            String customerPhone = sc.nextLine();
+                            customerList.get(i).setCustomerPhone(customerPhone);
+                            fileController.UpdateCustomerFile(customerList, "Customer.DAT");
+                            System.out.println("Sửa thông tin thành công!");
+                        }
+                    }
+                    break;
+                case 0:
+                    return;
+            }
+        } while (true);
+    }
+
+    private static void accCustomer() {
+        int choice;
+        while (true) {
+            System.out.println("------------ Tài Khoản ------------");
+            System.out.println("1. Tạo tài khoản ");
+            System.out.println("2. Đăng nhập ");
+            System.out.println("0. Thoát");
+            System.out.print("Chọn chức năng: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1:
+                    createAccount("AccountCustomer.DAT");
+                    break;
+                case 2:
+                    loginCustomer();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Chọn sai chức năng!");
+                    accAdmin();
+            }
+        }
+    }
+
+    private static void loginCustomer() {
+        accountList = fileController.ReadAccountFromFile("AccountCustomer.DAT");
+        String username, password;
+        System.out.print("Nhập username: ");
+        username = sc.nextLine();
+        System.out.print("Nhập password: ");
+        password = sc.nextLine();
+        if (checkExistAccount(username,password)) {
+            Account account = new Account();
+            for (int i = 0; i < accountList.size(); i++) {
+                if(accountList.get(i).getUsername().compareTo(username) == 0){
+                    account = accountList.get(i);
+                }
+            }
+            do {
+                System.out.println("---------- Chức năng ----------");
+                System.out.println("1. Xem danh sách Pet trong cửa hàng");
+                System.out.println("2. Mua Pet trong cửa hàng");
+                System.out.println("3. Tìm kiếm Pet");
+                System.out.println("4. Xem danh sách hóa đơn");
+                System.out.println("5. Thông tin tài khoản");
+                System.out.println("6. Thay đổi thông tin tài khoản");
+                System.out.println("0. Quay lại");
+                System.out.print("Chọn chức năng: ");
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        petList = fileController.ReadPetFromFile("PetStore.DAT");
+                        petList.forEach(pet -> System.out.println(pet));
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 0:
+                        return;
+                }
+            } while (true);
+        } else {
+            System.out.println("Tài khoản hoặc mật khẩu không tồn tại!");
         }
     }
 }
