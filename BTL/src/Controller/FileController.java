@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Account;
-import Model.Bill;
-import Model.Customer;
-import Model.Pet;
+import Model.*;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -225,6 +222,47 @@ public class FileController {
             printWriter.println(
                     bill.getBillId() + "|" + bill.getCustomerId() + "|" + bill.getPetId() + "|" +
                     bill.getTotalMoney() + "|" + bill.getDateOfPurchase()
+            );
+        }
+        CloseFileAfterWrite();
+    }
+
+    //CustomerAccountManage
+    public void WriteCusAccToFile(String fileName, CustomerAccountManage customerAccountManage) {
+        OpenFileToWrite(fileName);
+        printWriter.println(
+                customerAccountManage.getAccountId() + "|" + customerAccountManage.getCustomerId()
+        );
+        CloseFileAfterWrite();
+    }
+
+    public CustomerAccountManage CreateCusAccFromData(String data) {
+        String[] datas = data.split("\\|");
+        CustomerAccountManage customerAccountManage = new CustomerAccountManage(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]));
+        return customerAccountManage;
+    }
+
+    public List<CustomerAccountManage> ReadCusAccFromFile(String fileName) {
+        OpenFileToRead(fileName);
+        List<CustomerAccountManage> customerAccountManageList = new ArrayList<>();
+        while (scanner.hasNext()) {
+            String data = scanner.nextLine();
+            CustomerAccountManage customerAccountManage = CreateCusAccFromData(data);
+            customerAccountManageList.add(customerAccountManage);
+        }
+        CloseFileAfterRead();
+        return customerAccountManageList;
+    }
+
+    public void UpdateCusAccFile(List<CustomerAccountManage> customerAccountManageList, String fileName) {
+        File file = new File(fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        OpenFileToWrite(fileName);
+        for (CustomerAccountManage customerAccountManage : customerAccountManageList) {
+            printWriter.println(
+                    customerAccountManage.getAccountId() + "|" + customerAccountManage.getCustomerId()
             );
         }
         CloseFileAfterWrite();
