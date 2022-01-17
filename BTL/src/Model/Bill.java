@@ -58,14 +58,7 @@ public class Bill{
         this.dateOfPurchase = dateOfPurchase;
     }
 
-    @Override
-    public String toString() {
-        return "Bill{" +
-                "billId=" + billId +
-                ", customerId=" + customerId +
-                ", petId=" + petId +
-                ", totalMoney=" + totalMoney +
-                ", dateOfPurchase='" + dateOfPurchase + '\'' +
-                '}';
+    public void outputBill() {
+        System.out.printf("%-10d %-10d %-10d %-20d %-20s \n", billId, customerId, petId, totalMoney, dateOfPurchase);
     }
 }

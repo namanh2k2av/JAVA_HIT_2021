@@ -78,16 +78,7 @@ public class Pet {
         this.petPrice = petPrice;
     }
 
-    @Override
-    public String toString() {
-        return "Pet{" +
-                "petId=" + petId +
-                ", petName='" + petName + '\'' +
-                ", species='" + species + '\'' +
-                ", petGender='" + petGender + '\'' +
-                ", petAge='" + petAge + '\'' +
-                ", featherColor='" + featherColor + '\'' +
-                ", petPrice=" + petPrice +
-                '}';
+    public void outputPet() {
+        System.out.printf("%-10d %-30s %-10s %-10s %-20s %-20s %-20d \n", petId, petName, species, petGender, petAge, featherColor, petPrice);
     }
 }

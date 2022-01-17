@@ -68,15 +68,7 @@ public class Customer {
         this.customerPhone = customerPhone;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", customerAge=" + customerAge +
-                ", customerGender='" + customerGender + '\'' +
-                ", customerAddress='" + customerAddress + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                '}';
+    public void outputCustomer() {
+        System.out.printf("%-10d %-30s %-20d %-20s %-20s %-20s \n", customerId, customerName, customerAge, customerGender, customerAddress, customerPhone);
     }
 }

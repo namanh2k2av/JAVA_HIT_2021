@@ -78,15 +78,7 @@ public class Account {
         this.createAt = createAt;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", createAt='" + createAt + '\'' +
-                '}';
+    public void outputAccount() {
+        System.out.printf("%-10d %-30s %-20s %-20s %-20s %-20s \n", id, fullName, username, email, phone, createAt);
     }
 }
