@@ -360,10 +360,9 @@ public class RunMain {
         do {
             System.out.println();
             System.out.println("*--------------------- Chức năng---------------------*");
-            System.out.println("|    1. Sắp xếp danh sách tài khoản theo id          |");
-            System.out.println("|    2. Sắp xếp danh sách tài khoản theo họ và tên   |");
-            System.out.println("|    3. Sắp xếp danh sách tài khoản theo username    |");
-            System.out.println("|    4. Sắp xếp danh sách tài khoản theo ngày tạo    |");
+            System.out.println("|    1. Sắp xếp danh sách tài khoản theo họ và tên   |");
+            System.out.println("|    2. Sắp xếp danh sách tài khoản theo username    |");
+            System.out.println("|    3. Sắp xếp danh sách tài khoản theo ngày tạo    |");
             System.out.println("|    0. Quay lại                                     |");
             System.out.println("|____________________________________________________|");
             System.out.print("Chọn chức năng: ");
@@ -371,34 +370,19 @@ public class RunMain {
             switch (sortAccount) {
                 case 1:
                     accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
-                    for (int i = 0; i < accountList.size(); i++) {
-                        for (int j = i + 1; j < accountList.size(); j++) {
-                            if (accountList.get(i).getId() > accountList.get(j).getId()) {
-                                Account temp = accountList.get(i);
-                                accountList.set(i, accountList.get(j));
-                                accountList.set(j, temp);
-                            }
-                        }
-                    }
-                    fileController.UpdateAccountFile(accountList, "AccountAdmin.DAT");
-                    System.out.printf("%-10s %-30s %-20s %-20s %-20s %-20s \n", "Id", "FullName", "Username", "Email", "Phone", "CreateAt");
-                    accountList.forEach(account -> account.outputAccount());
-                    break;
-                case 2:
-                    accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     Collections.sort(accountList, new SortAccByFullname());
                     fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                     System.out.printf("%-10s %-30s %-20s %-20s %-20s %-20s \n", "Id", "FullName", "Username", "Email", "Phone", "CreateAt");
                     accountList.forEach(account -> account.outputAccount());
                     break;
-                case 3:
+                case 2:
                     accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     Collections.sort(accountList, new SortAccByUsername());
                     fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
                     System.out.printf("%-10s %-30s %-20s %-20s %-20s %-20s \n", "Id", "FullName", "Username", "Email", "Phone", "CreateAt");
                     accountList.forEach(account -> account.outputAccount());
                     break;
-                case 4:
+                case 3:
                     accountList = fileController.ReadAccountFromFile("AccountAdmin.DAT");
                     Collections.sort(accountList, new SortAccByCreateAt());
                     fileController.UpdateAccountFile(accountList,"AccountAdmin.DAT");
@@ -683,9 +667,8 @@ public class RunMain {
     private static void sortPet() {
         do {
             System.out.println("----------------- Chức năng -----------------");
-            System.out.println("|   1. Sắp xếp danh sách Pet theo id        |");
-            System.out.println("|   2. Sắp xếp danh sách Pet theo tên Pet   |");
-            System.out.println("|   3. Sắp xếp danh sách Pet theo giá       |");
+            System.out.println("|   1. Sắp xếp danh sách Pet theo tên Pet   |");
+            System.out.println("|   2. Sắp xếp danh sách Pet theo giá       |");
             System.out.println("|   0. Quay lại                             |");
             System.out.println("|___________________________________________|");
             System.out.print("Chọn chức năng: ");
@@ -693,27 +676,12 @@ public class RunMain {
             switch (choice) {
                 case 1:
                     petList = fileController.ReadPetFromFile("PetStore.DAT");
-                    for (int i = 0; i < petList.size(); i++) {
-                        for (int j = i + 1; j < petList.size(); j++) {
-                            if (petList.get(i).getPetId() > petList.get(j).getPetId()) {
-                                Pet temp = petList.get(i);
-                                petList.set(i, petList.get(j));
-                                petList.set(j, temp);
-                            }
-                        }
-                    }
-                    fileController.UpdatePetFile(petList, "PetStore.DAT");
-                    System.out.printf("%-10s %-30s %-10s %-10s %-20s %-20s %-20s \n", "Id", "petName", "species", "petGender", "petAge", "featherColor", "petPrice");
-                    petList.forEach(pet -> pet.outputPet());
-                    break;
-                case 2:
-                    petList = fileController.ReadPetFromFile("PetStore.DAT");
                     Collections.sort(petList, new SortPetByNamePet());
                     fileController.UpdatePetFile(petList, "PetStore.DAT");
                     System.out.printf("%-10s %-30s %-10s %-10s %-20s %-20s %-20s \n", "Id", "petName", "species", "petGender", "petAge", "featherColor", "petPrice");
                     petList.forEach(pet -> pet.outputPet());
                     break;
-                case 3:
+                case 2:
                     petList = fileController.ReadPetFromFile("PetStore.DAT");
                     for (int i = 0; i < petList.size(); i++) {
                         for (int j = i + 1; j < petList.size(); j++) {
@@ -1032,11 +1000,10 @@ public class RunMain {
         do {
             System.out.println();
             System.out.println("*-------------- Chức năng --------------*");
-            System.out.println("|     1. Sắp xếp theo id hóa đơn        |");
-            System.out.println("|     2. Sắp xếp theo id khách hàng     |");
-            System.out.println("|     3. Sắp xếp theo id pet            |");
-            System.out.println("|     4. Sắp xếp theo thành tiền        |");
-            System.out.println("|     5. sắp xếp theo ngày tạo          |");
+            System.out.println("|     1. Sắp xếp theo id khách hàng     |");
+            System.out.println("|     2. Sắp xếp theo id pet            |");
+            System.out.println("|     3. Sắp xếp theo thành tiền        |");
+            System.out.println("|     4. sắp xếp theo ngày tạo          |");
             System.out.println("|     0. Quay lại                       |");
             System.out.println("|_______________________________________|");
             System.out.print("Chọn chức năng: ");
@@ -1044,20 +1011,6 @@ public class RunMain {
             billList = fileController.ReadBillFromFile("Bill.DAT");
             switch (choice) {
                 case 1:
-                    for (int i = 0; i < billList.size(); i++) {
-                        for (int j = i + 1; j < billList.size(); j++) {
-                            if (billList.get(i).getBillId() > billList.get(j).getBillId()) {
-                                Bill temp = billList.get(i);
-                                billList.set(i, billList.get(j));
-                                billList.set(j, temp);
-                            }
-                        }
-                    }
-                    fileController.UpdateBillFile(billList, "Bill.DAT");
-                    System.out.printf("%-10s %-10s %-10s %-20s %-20s \n", "billId", "customerId", "petId", "totalMoney", "dateOfPurchase");
-                    billList.forEach(bill -> bill.outputBill());
-                    break;
-                case 2:
                     for (int i = 0; i < billList.size(); i++) {
                         for (int j = i + 1; j < billList.size(); j++) {
                             if (billList.get(i).getCustomerId() > billList.get(j).getCustomerId()) {
@@ -1071,7 +1024,7 @@ public class RunMain {
                     System.out.printf("%-10s %-10s %-10s %-20s %-20s \n", "billId", "customerId", "petId", "totalMoney", "dateOfPurchase");
                     billList.forEach(bill -> bill.outputBill());
                     break;
-                case 3:
+                case 2:
                     for (int i = 0; i < billList.size(); i++) {
                         for (int j = i + 1; j < billList.size(); j++) {
                             if (billList.get(i).getPetId() > billList.get(j).getPetId()) {
@@ -1085,7 +1038,7 @@ public class RunMain {
                     System.out.printf("%-10s %-10s %-10s %-20s %-20s \n", "billId", "customerId", "petId", "totalMoney", "dateOfPurchase");
                     billList.forEach(bill -> bill.outputBill());
                     break;
-                case 4:
+                case 3:
                     for (int i = 0; i < billList.size(); i++) {
                         for (int j = i + 1; j < billList.size(); j++) {
                             if (billList.get(i).getTotalMoney() > billList.get(j).getTotalMoney()) {
@@ -1099,7 +1052,7 @@ public class RunMain {
                     System.out.printf("%-10s %-10s %-10s %-20s %-20s \n", "billId", "customerId", "petId", "totalMoney", "dateOfPurchase");
                     billList.forEach(bill -> bill.outputBill());
                     break;
-                case 5:
+                case 4:
                     Collections.sort(billList, new SortBillByDate());
                     fileController.UpdateBillFile(billList, "Bill.DAT");
                     System.out.printf("%-10s %-10s %-10s %-20s %-20s \n", "billId", "customerId", "petId", "totalMoney", "dateOfPurchase");
